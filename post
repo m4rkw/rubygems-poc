@@ -1,0 +1,51 @@
+Abusing rubygems for fun and profit
+===================================
+
+RubyGems is a nice system, very easy to use and also easy to abuse.  Anyone can push
+a gem straight into the global namespace, even if the gem has the same name as a core
+library.
+
+This can be trivially abused to break into systems of anyone who isn't very careful
+what gems they use (and let's be honest, that's probably a lot of developers :).
+
+Ruby gems can include executable scripts which get installed into /usr/local/bin/.
+On Ubuntu, Centos and probably most other linux distros, /usr/local/bin takes precedence
+over /bin, /usr/bin, /sbin etc.  This means we can drop a fake "ls" script into
+/usr/local/bin/ which will get executed every time the user types ls.
+
+A PoC for this can be found here: https://github.com/m4rkw/rubygems-poc
+
+Once installed the fake ls binary takes precedence and can then silently run whatever
+malicious code you like (eg a connect-back shell to a remote system) before passing
+the args onto the real ls.
+
+The PoC just prints a silly message.
+
+    $ ls
+    bin  file-4.3.2.gem  file.gemspec  lib  LICENSE  README
+    $ sudo gem install file-4.3.2.gem
+    Successfully installed file-4.3.2
+    Parsing documentation for file-4.3.2
+    Installing ri documentation for file-4.3.2
+    Done installing documentation for file after 0 seconds
+    1 gem installed
+    $ ls
+    /============\
+    | LOL HAXXED |
+    \============/
+    bin  file-4.3.2.gem  file.gemspec  lib  LICENSE  README
+    $
+
+At the time of writing the "file" gem name isn't taken so anyone could push a gem
+straight into rubygems that would be installed whenever anyone types "gem install file".
+This could easily catch someone out if they don't realise that the File class is built-in
+rather than provided by a gem.
+
+Another vector would be creating a small gem that actually does something useful and
+just wait for people to install it.  I wrote a simple Transmission API library and got
+hundreds of downloads.
+
+Conclusion
+==========
+
+Be very careful what gems you install!

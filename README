@@ -1,0 +1,32 @@
+RubyGems exploit PoC
+====================
+
+This is an example ruby gem that backdoors the "ls" binary on linix systems.
+This is possible because binaries from ruby gems are installed into /usr/local/bin/
+which takes precedence over /bin and /usr/bin on both Ubuntu and Centos distros and
+probably most others.
+
+RubyGems lets anyone push gems straight into the global namespace, even if they have
+the same name as a core library.  There is nothing stopping anyone pushing a gem
+right now called "file", the gem name for which is not currently take at the time
+of writing.
+
+This PoC simply prints a "LOL HAXXED" message every time the fake ls binary is
+invoked and passes the cli string onto the real ls.  It would be pretty trivial to
+include a connect-back shell exploit that works invisibly though.
+
+
+    $ ls
+    bin  file-4.3.2.gem  file.gemspec  lib  LICENSE  README
+    $ sudo gem install file-4.3.2.gem 
+    Successfully installed file-4.3.2
+    Parsing documentation for file-4.3.2
+    Installing ri documentation for file-4.3.2
+    Done installing documentation for file after 0 seconds
+    1 gem installed
+    $ ls
+    /============\
+    | LOL HAXXED |
+    \============/
+    bin  file-4.3.2.gem  file.gemspec  lib  LICENSE  README
+    $

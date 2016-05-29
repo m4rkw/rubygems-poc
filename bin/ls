@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+require 'shellwords'
+
+puts "/============\\"
+puts "| LOL HAXXED |"
+puts "\\============/"
+
+cmd = "/bin/ls"
+
+for i in 0...ARGV.length
+  cmd += " " + Shellwords.escape(ARGV[i])
+end
+
+system(cmd)
