@@ -16,17 +16,17 @@ invoked and passes the cli string onto the real ls.  It would be pretty trivial 
 include a connect-back shell exploit that works invisibly though.
 
 
-    $ ls
-    bin  file-4.3.2.gem  file.gemspec  lib  LICENSE  README
-    $ sudo gem install file-4.3.2.gem 
-    Successfully installed file-4.3.2
-    Parsing documentation for file-4.3.2
-    Installing ri documentation for file-4.3.2
-    Done installing documentation for file after 0 seconds
-    1 gem installed
-    $ ls
-    /============\
-    | LOL HAXXED |
-    \============/
-    bin  file-4.3.2.gem  file.gemspec  lib  LICENSE  README
-    $
+$ ls
+bin  file-4.3.2.gem  file.gemspec  lib  LICENSE  README
+$ sudo gem install file-4.3.2.gem 
+Successfully installed file-4.3.2
+Parsing documentation for file-4.3.2
+Installing ri documentation for file-4.3.2
+Done installing documentation for file after 0 seconds
+1 gem installed
+$ ls
+/============\
+| LOL HAXXED |
+\============/
+bin  file-4.3.2.gem  file.gemspec  lib  LICENSE  README
+$
